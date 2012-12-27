@@ -1,4 +1,4 @@
 PacProxy
 ========
 
-A proxy server that use PAC file to choose how to forward request
+A proxy server that use PAC file to decide how to forward request
