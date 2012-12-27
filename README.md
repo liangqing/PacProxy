@@ -27,4 +27,4 @@ Issues
 * There is no authentication feature in PacProxy
 * Now it can only forward request to direct connecting or socks5 server(do not support socks4)
 * Because FindProxyForURL need a url parameter, so we need cheating the socks client to guess the real http url to FindProxyForURL.
-* Because the built-in DNS module of nodejs provide only asynchronous call, so any DNS resolve related function in PAC file can not really resolve any host. The program is maintaining a DNS cache table, DNS resolve function can only get resolve result in the table.
+* Because the built-in DNS module of nodejs provide only asynchronous call, so any DNS resolve related function in PAC is faked. The program is maintaining a DNS cache table, DNS resolve function can only get result in the table.
