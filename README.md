@@ -3,23 +3,21 @@ PacProxy
 
 A socks proxy server that use PAC file to decide how to forward request
 
-
-Install
--------
-1. Install [node.js](http://nodejs.org/)
-2. Download [PacProxy](https://github.com/liangqing/PacProxy/archive/master.zip)
-3. Run PacProxy.bat
-4. Set the browser's proxy to 127.0.0.1:9999(socks5)
-
-
 Features
 --------
 * Implement a socks server(support socks4 and socks5, no authentication module)
 * Can use PAC file to decide how to forward request
 
+Install
+-------
+1. Install [node.js](http://nodejs.org/)
+2. Download [PacProxy](https://github.com/liangqing/PacProxy/archive/master.zip), and uncompress it
+3. Run PacProxy.bat
+4. Set the browser's proxy to 127.0.0.1:9999(socks5)
+
 Notes
 -----
-1. Because there are no config file, you need modify source code(ProxyServer.js) to change bind address/port or path of the PAC file
+1. Because there is no configuration file(will provide in next phase), you need modify source code(ProxyServer.js) to change bind address/port or path of the PAC file
 2. Default bind address is 127.0.0.1:9999
 3. Default PAC file is autoproxy.pac in same directory
 4. IE/Chrome(without proxy extension) will send socks4 request to socks proxy server, * it is not recommended *, so please install a proxy extension to chrome, such as [Foxy Proxy Standard](https://chrome.google.com/webstore/detail/foxy-proxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
