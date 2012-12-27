@@ -6,7 +6,7 @@ A socks proxy server that use PAC file to decide how to forward request
 Features
 --------
 * Implement a socks server(support socks4 and socks5, no authentication module)
-* Can use PAC file to decide how to forward request
+* Using PAC file to decide how to forward request
 
 Install
 -------
