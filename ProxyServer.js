@@ -3,7 +3,7 @@ var Net = require('net')
   , Https = require('https')
   , Socks = require('./lib/socks')
   , Logger = require('./lib/log')
-  , forwardRequest = require('./lib/forward').create('pacfiles/autoproxy.pac')
+  , forwardRequest = require('./lib/forward').create('autoproxy.pac')
   , Url = require('url')
   , bindAddress = {
       host: '127.0.0.1'
