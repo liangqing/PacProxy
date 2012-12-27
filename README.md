@@ -12,7 +12,10 @@ Install
 -------
 1. Install [node.js](http://nodejs.org/)
 2. Download [PacProxy](https://github.com/liangqing/PacProxy/archive/master.zip), and uncompress it
-3. Run PacProxy.bat
+3. Run PacProxy.bat(windows only), or command line:
+  ```
+  node ProxyServer.js
+  ```
 4. Set the browser's proxy to 127.0.0.1:9999(socks5)
 
 Notes
