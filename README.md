@@ -22,7 +22,7 @@ Notes
 1. Because there are no config file, you need modify source code(ProxyServer.js) to change bind address/port or path of the PAC file
 2. Default bind address is 127.0.0.1:9999
 3. Default PAC file is autoproxy.pac in same directory
-4. IE/Chrome(without proxy extension) will send socks4 request to socks proxy server, ** it is not recommended **, so please install a proxy extension to chrome, such as [Foxy Proxy Standard](https://chrome.google.com/webstore/detail/foxy-proxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
+4. IE/Chrome(without proxy extension) will send socks4 request to socks proxy server, * it is not recommended *, so please install a proxy extension to chrome, such as [Foxy Proxy Standard](https://chrome.google.com/webstore/detail/foxy-proxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
 
 Issues
 ------
