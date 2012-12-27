@@ -6,13 +6,18 @@ A socks proxy server that use PAC file to decide how to forward request
 Features
 --------
 * Implement a socks server(support socks4 and socks5, no authentication module)
-* Can use PAC file to decide how to forward request
+* Using PAC file to decide how to forward request
 
 Install
 -------
 1. Install [node.js](http://nodejs.org/)
 2. Download [PacProxy](https://github.com/liangqing/PacProxy/archive/master.zip), and uncompress it
-3. Run PacProxy.bat
+3. Run PacProxy.bat(windows only), or command line:
+
+  ```
+  node ProxyServer.js
+  ```
+
 4. Set the browser's proxy to 127.0.0.1:9999(socks5)
 
 Notes
@@ -27,4 +32,4 @@ Issues
 * There is no authentication feature in PacProxy
 * Now it can only forward request to direct connecting or socks5 server(do not support socks4)
 * Because FindProxyForURL need a url parameter, so we need cheating the socks client to guess the real http url to FindProxyForURL.
-* Because the built-in DNS module of nodejs provide only asynchronous call, so any DNS resolve related function in PAC file can not really resolve any host. The program is maintaining a DNS cache table, DNS resolve function can only get resolve result in the table.
+* Because the built-in DNS module of nodejs provide only asynchronous call, so any DNS resolve related function in PAC is faked. The program is maintaining a DNS cache table, DNS resolve function can only get result in the table.
