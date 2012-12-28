@@ -23,6 +23,14 @@ function parseHeaderLine(line) {
   }
 }
 
+function parseHeaders(data) {
+  var match, headers = {}
+  while(match = rHeaders.exec(data)) {
+    headers[match[1].toLowerCase()] = match[2].toLowerCase()
+  }
+  return headers
+}
+
 function buildUrl(address, headerline) {
   var host = address.host
     , port = address.port
@@ -45,15 +53,23 @@ function buildUrl(address, headerline) {
 //parse the data to guest the protocol, if protocol is http, we can get the exact url
 function guessRequest(request) {
   var headers = (request.buffer || '').toString()
-    , p = headers.indexOf("\r\n")
+    , p = headers.indexOf("\r\n"), p2 = headers.indexOf("\r\n\r\n")
     , headerline
   if(p > 0) {
     headerline = headers.substring(0, p)
+    if(p2 > 0) {
+      headers = parseHeaders(headers.substring(p+2, p2))
+    }
   }
   headerline = parseHeaderLine(headerline)
   if(headerline) {
     request.method = headerline.method
     request.httpVersion = headerline.version
+  }
+  if(typeof headers === 'object') {
+    request.headers = headers
+    if(headers.host)
+      request.host = headers.host
   }
   request.url = buildUrl(request, headerline)
   request.isGuessed = true
@@ -85,7 +101,7 @@ Socks.server(bindAddress, function() {
     forwardRequest(this, request)
   })
   .on('error', function(err) {
-    Logger.error('Error occurs in client connection:'+JSON.stringify(err))
+    Logger.error('Error occurs in client connection('+request.host+':'+request.port+'):'+JSON.stringify(err))
   })
 })
 .on('error', function(err) {
