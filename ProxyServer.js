@@ -2,15 +2,33 @@ var Net = require('net')
   , Http = require('http')
   , Https = require('https')
   , Socks = require('./lib/socks')
-  , Logger = require('./lib/log')
-  , forwardRequest = require('./lib/forward').create('autoproxy.pac')
   , Url = require('url')
-  , bindAddress = {
-      host: '127.0.0.1'
-    , port: 9999
+  , defaultConfig = {
+      binding: {
+        host: '127.0.0.1'
+      , port: 9999
+      }
+    , pac: {
+        path: 'autoproxy.pac'
+      , disableDNS: false
+      }
+    , logger: {
+        level: 'info'
+      }
     }
   , rHeaders = /([a-z0-9\-]+)\s*:\s*(.*)/ig
   , rHeaderLine = /([a-z]+) (.+) ([a-z0-9]+)\/([\.0-9]+)/i
+  , router , logger, config
+
+try {
+  config = require('./lib/class.js').extend(true, {}, defaultConfig, require('./config').config)
+} catch(err) {
+  console.log('Failed to load config file, use default configuration')
+  config = defaultConfig
+}
+
+logger = require('./lib/log').create(config.logger)
+router = require('./lib/router').create(config.pac)
 
 function parseHeaderLine(line) {
   var match = rHeaderLine.exec(line)
@@ -63,6 +81,7 @@ function guessRequest(request) {
   }
   headerline = parseHeaderLine(headerline)
   if(headerline) {
+    request.protocol = headerline.protocol
     request.method = headerline.method
     request.httpVersion = headerline.version
   }
@@ -76,36 +95,67 @@ function guessRequest(request) {
   return request
 }
 
-Socks.server(bindAddress, function() {
-  var request = {}
-  this
-  .on('end', function() {
-    Logger.debug('socks connection ended')
+router
+.on('proxyFound', function(request, proxy) {
+  logger.info('Proxy('+JSON.stringify(proxy)+') found for '+request)
+})
+.on('proxyConnected', function(request, proxy) {
+  if(proxy.type === 'direct') {
+    logger.info('Connected to '+request)
+  } else {
+    logger.info('Connected to proxy '+JSON.stringify(proxy)+' for '+request)
+  }
+})
+.on('proxyUnsupported', function(request, proxy) {
+  logger.error('unsupported proxy type: '+proxy.type)
+})
+.on('error', function(request, err) {
+  if(err.syscall == 'getaddrinfo') {
+    logger.error("Failed to resolve host '"+request.host+"': "+JSON.stringify(err))
+  } else {
+    logger.error(JSON.stringify(err))
+  }
+})
+
+Socks.server(config.binding, function() {
+  var request = {
+      connection: this
+    , toString: function() {
+        if(request.url && request.protocol === 'http')
+          return request.url
+        return request.host+':'+request.port
+      }
+    }
+  , client = this.remoteAddress+':'+this.remotePort
+
+  logger.info('New socks connection from '+client)
+  this.on('end', function() {
+    logger.debug('Socks connection ended from '+client)
   })
   .on('request', function(address) {
     request.host = address.host
     request.port = address.port
-    Logger.debug('New request, address:'+address)
+    logger.debug('Socks request('+address+')'+' from '+client)
     //cheat the client that every thing is ok
     this.reply(0, this.address())
     //Do not need guess request by incoming data
     if(address.port === 22 || address.port === 23 || address.port === 443) {
       guessRequest(request)
-      forwardRequest(this, request)
+      router.forward(request)
     }
   })
   .on('data', function(data) {
     if(request.isGuessed) return
     request.buffer = data
     guessRequest(request)
-    forwardRequest(this, request)
+    router.forward(request)
   })
   .on('error', function(err) {
-    Logger.error('Error occurs in client connection('+request.host+':'+request.port+'):'+JSON.stringify(err))
+    logger.error('Error occurs in client connection('+request.host+':'+request.port+'):'+JSON.stringify(err))
   })
 })
 .on('error', function(err) {
-  Logger.error('Error occurs in socks server:'+JSON.stringify(err))
+  logger.error('Error occurs in socks server:'+JSON.stringify(err))
 })
 
 
