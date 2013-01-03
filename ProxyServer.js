@@ -48,13 +48,13 @@ router = require('./lib/router').create(config.pac)
   if(err.syscall == 'getaddrinfo') {
     logger.error("Failed to resolve host '"+request.host+"': "+JSON.stringify(err))
   } else {
-    logger.error(JSON.stringify(err))
+    logger.error(JSON.stringify(err)+', request: '+request)
   }
 })
 
 Socks.server(config.binding, function() {
   var client = this.remoteAddress+':'+this.remotePort
-    , isForwarded = false
+    , isForwarded = false, address
   logger.info('New socks connection from '+client)
   this
   .on('request', function(ad) {
@@ -74,7 +74,7 @@ Socks.server(config.binding, function() {
     isForwarded = true 
   })
   .on('error', function(err) {
-    logger.error('Error occurs in client connection('+request.host+':'+request.port+'):'+JSON.stringify(err))
+    logger.error('Error occurs in client connection('+address.host+':'+address.port+'):'+JSON.stringify(err))
   })
   .on('end', function() {
     logger.debug('Socks connection ended from '+client)
