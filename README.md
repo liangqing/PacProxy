@@ -12,21 +12,19 @@ Install
 -------
 1. Install [node.js](http://nodejs.org/)
 2. Download [PacProxy](https://github.com/liangqing/PacProxy/archive/master.zip), and uncompress it
-3. Run PacProxy.bat(windows only), or command line:
+3. If you need modify the default configuration, copy config.sample.js to config.js, and modify config.js to set the configuration, such as server bind address or port
+4. Run PacProxy.bat(windows only), or command line:
 
   ```
   node ProxyServer.js
   ```
 
-4. Set the browser's proxy to 127.0.0.1:9999(socks5)
+5. Set the browser's proxy to 127.0.0.1:9999(socks5)
 
 Notes
 -----
-1. Because there is no configuration file(will provide in next phase), you need modify source code(ProxyServer.js) to change bind address/port or path of the PAC file
-2. Default bind address is 127.0.0.1:9999
-3. Default PAC file is autoproxy.pac in same directory
-4. IE/Chrome(without proxy extension) will send socks4 request to socks proxy server, * it is not recommended *, so please install a proxy extension to chrome, such as [Foxy Proxy Standard](https://chrome.google.com/webstore/detail/foxy-proxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
-5. If using firefox, please goto about:config and set 'network.proxy.socks_remote_dns' to 'true'
+1. IE/Chrome(without proxy extension) will send socks4 request to socks proxy server, * it is not recommended *, so please install a proxy extension to chrome, such as [Foxy Proxy Standard](https://chrome.google.com/webstore/detail/foxy-proxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp)
+2. If using firefox, please goto about:config and set 'network.proxy.socks_remote_dns' to 'true'
 
 Issues
 ------
@@ -37,5 +35,5 @@ Issues
 
 TODO
 ----
-* Provide configuration function
+* Provide configuration function [done]
 * Add support for http/https/socks4 proxy forwarding

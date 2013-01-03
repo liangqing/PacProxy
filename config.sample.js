@@ -3,7 +3,7 @@ exports.config = {
   //binding address and port of socks server
   binding: {
 
-    //if you want to bind in every address, please comment it, or set it to number 0
+    //if you want to bind in every address, please set it to number 0
     host: '127.0.0.1'
 
     //bind port
