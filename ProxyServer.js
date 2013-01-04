@@ -19,7 +19,7 @@ var Net = require('net')
   , router , logger, config
 
 try {
-  config = require('./lib/class.js').extend(true, {}, defaultConfig, require('./config').config)
+  config = require('./lib/class').extend(true, {}, defaultConfig, require('./config').config)
 } catch(err) {
   console.log('Failed to load config file, use default configuration')
   config = defaultConfig
