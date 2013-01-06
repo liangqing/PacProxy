@@ -36,4 +36,5 @@ Issues
 TODO
 ----
 * Provide configuration function [done]
-* Add support for http/https/socks4 proxy forwarding
+* Support http/https proxy forwarding [done]
+* Support binding as http/https proxy
