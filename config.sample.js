@@ -1,10 +1,13 @@
 exports.config = {
 
-  //binding address and port of socks server
-  binding: {
+  //proxy server related
+  server: {
 
-    //if you want to bind in every address, please set it to number 0
-    host: '127.0.0.1'
+    //proxy server type, should be socks/http/https
+    type: "socks"
+
+    //binding host, if you want to bind in every address, please set it to number 0
+  , host: '127.0.0.1'
 
     //bind port
   , port: 9999

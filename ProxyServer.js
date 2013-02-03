@@ -4,8 +4,9 @@ var Net = require('net')
   , Socks = require('./lib/socks')
   , Request = require('./lib/request')
   , defaultConfig = {
-      binding: {
-        host: '127.0.0.1'
+      server: {
+        type: 'socks'
+      , host: '127.0.0.1'
       , port: 9999
       }
     , pac: {
@@ -52,7 +53,7 @@ router = require('./lib/router').create(config.pac)
   }
 })
 
-Socks.server(config.binding, function() {
+Socks.server(config.server, function() {
   var client = this.remoteAddress+':'+this.remotePort
     , isForwarded = false, address
   logger.info('New socks connection from '+client)
